@@ -5,6 +5,7 @@ import EditPage from './routes/EditPage/EditPage';
 import {authUser} from './fbase';
 import {onAuthStateChanged } from "firebase/auth";
 import LoginPage from './routes/LoginPage/LoginPage';
+import styles from './App.module.css';
 function App() {
   const [init,setInit]=useState(false);
   const [isLoggin,setIsLoggin]=useState(false);
@@ -22,9 +23,9 @@ function App() {
   },[]);
 
   return (
-    <div className="App">
+    <div className={styles.App}>
       {init ?(
-      <section>
+      <section className={styles.loginForm}>
       <Header isLoggin={isLoggin}/>
       {isLoggin ? <EditPage/> : <LoginPage/>}
       <Footer/>
