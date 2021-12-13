@@ -1,8 +1,8 @@
-## Business Card Maker
+## ✏️Business Card Maker
 
     React 와 Firebase 로 만드는 Business Card Maker
 
-## Tech Stack
+## 🛠 Tech Stack
 
 <p>
     <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=Node.js&logoColor=white"/>
@@ -10,14 +10,12 @@
     <img src="https://img.shields.io/badge/Firebase-FFCB2B?style=flat-square&logo=Firebase&logoColor=white"/>
 </p>
 
-## 프로젝트 요구사항
+## 🎯 프로젝트 요구사항
 
-    - [ ] Mercury
-    - [x] Venus
-    - [x] Earth (Orbit/Moon)
-    - [x] Mars
-    - [ ] Jupiter
-    - [ ] Saturn
-    - [ ] Uranus
-    - [ ] Neptune
-    - [ ] Comet Haley
+    - [ ] 로그인페이지
+        - [ ] 구글연동버튼 ✏️파이베이스 인증을 통해 구현✏️
+        - [ ] 깃헙연동버튼 ✏️파이베이스 인증을 통해 구현✏️
+    - [ ] 헤더구현.
+        -[ ] 로그인상태일때 헤더에 로그아웃 버튼 시각화.
+    - [ ] 풋터구현.
+    - [ ] edit card page 구현.

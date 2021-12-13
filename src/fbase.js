@@ -1,6 +1,6 @@
 
 import { initializeApp } from "firebase/app";
-
+import { getAuth} from "firebase/auth";
 const firebaseConfig = {
   apiKey: "AIzaSyDw7tricSnJQqCvC2-mgjJ8tpGUhCTOSU4",
   authDomain: "cardmaker2-c1863.firebaseapp.com",
@@ -12,3 +12,4 @@ const firebaseConfig = {
 
 
 initializeApp(firebaseConfig);
+export const authUser = getAuth();
