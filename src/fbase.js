@@ -13,5 +13,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
 export const authUser = getAuth();
 export const cardDb = getDatabase(app); 

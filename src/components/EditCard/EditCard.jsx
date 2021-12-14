@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { cardDb } from '../../fbase';
-import { getDatabase,ref, set ,push} from "firebase/database";
+import { ref, set ,push,onValue,update} from "firebase/database";
 import styles from './EditCard.module.css';
 const EditCard = ({userObj}) => {
     const [name,setName] = useState("");
@@ -10,6 +10,7 @@ const EditCard = ({userObj}) => {
     const [email,setEmail] = useState("");
     const [message,setMessage] = useState("");
 
+    const messageRef = ref(cardDb,`cards/-Mqt7n5h_ntp2p7zMUcH/`);
     const onChange = (event) =>{
         const {target:{name,value}}=event;
         switch(name){
@@ -30,6 +31,13 @@ const EditCard = ({userObj}) => {
                 break;
             case "Message":
                 setMessage(value);
+                onValue(messageRef, async(snapshot) => {
+                    const data = snapshot.val();
+                    console.log(data);
+                    await set(ref(cardDb,'cards/-Mqt7n5h_ntp2p7zMUcH'),{
+                        message:value
+                    })
+                  });
                 break;
             default:
                 break;
@@ -38,10 +46,11 @@ const EditCard = ({userObj}) => {
 
     const onSubmit = (event)=>{
         event.preventDefault();
-        const cardListRef = ref(cardDb);
+        const cardListRef = ref(cardDb,'cards');
         const newCardRef = push(cardListRef);
         const cardObj = {
-            uid:userObj.uid,
+            key:newCardRef.key,
+            uid:userObj.userId,
             name,
             company,
             color,
