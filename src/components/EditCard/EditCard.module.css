@@ -1,0 +1,61 @@
+.container {
+  width: 565px;
+}
+.input,
+.imageBtn {
+  border-style: none;
+  flex-grow: 1;
+  border-right: 1px solid black;
+}
+.input:focus {
+  outline: none;
+}
+.div1,
+.div2 {
+  display: flex;
+  width: 100%;
+  margin: 0;
+}
+.textarea {
+  display: block;
+  width: 99.2%;
+  height: 40px;
+  border: 1px solid black;
+  margin: 0;
+}
+.textarea:focus {
+  outline: none;
+}
+.div1 {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+}
+.div2 {
+  border-left: 1px solid black;
+}
+.div3 {
+  display: flex;
+  width: 100.2%;
+  margin: 0;
+}
+.inputImg {
+  display: none;
+}
+.submitBtn {
+  flex-grow: 1;
+  margin: 0;
+  border-style: none;
+  border-right: 1px solid black;
+  cursor: pointer;
+  background-color: #303952;
+  color: aliceblue;
+  height: 23px;
+}
+.imageBtn {
+  background-color: gray;
+  text-align: center;
+  padding: 1px;
+  color: aliceblue;
+  cursor: pointer;
+}

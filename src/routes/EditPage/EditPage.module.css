@@ -1,0 +1,13 @@
+.container {
+  background-color: aliceblue;
+  display: flex;
+  justify-content: space-around;
+  width: 1350px;
+  height: 600px;
+}
+.liner {
+  background-color: grey;
+  opacity: 0.2;
+  width: 2px;
+  height: 100%;
+}
