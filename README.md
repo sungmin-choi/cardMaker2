@@ -27,3 +27,10 @@
 
 - ## css
   `textarea` 태그 기본 옵션이 display:inline 이기때문에 밑에 빈공간이 생긴다 => display:block 으로 바꾸면 해결할 수 있다.
+- ## firebase
+
+  `error`:
+  <img src='./public/fbError1.png'>
+  실시간 데이터베이스 url이 안맞아서 데이터가 못 올라가는 상태이다 데이터베이스 url을 바꾸는 방법을 몰라서 한참 헤멧다.
+
+  `해결방법`: firebase 콘솔로 이동해서 기본 GCP 리소스 위치 를 리얼데이터베이스 위치랑 같은 위치로 설정해두고 새로 엄데이트 된 firebaseConfig 를 업데이트 해 줬다.

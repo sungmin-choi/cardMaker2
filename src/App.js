@@ -9,11 +9,16 @@ import styles from './App.module.css';
 function App() {
   const [init,setInit]=useState(false);
   const [isLoggin,setIsLoggin]=useState(false);
+  const [userObj,setUserObj] = useState(null);
 
   useEffect(()=>{
     onAuthStateChanged(authUser, (user) => {
       if (user) {
-        console.log(user);
+        const userObj={
+          userId:user.uid,
+          createAt:user.metadata.createdAt,
+        }
+        setUserObj(userObj);
         setIsLoggin(true);
       } else {
         setIsLoggin(false);
@@ -27,7 +32,7 @@ function App() {
       {init ?(
       <section className={styles.loginForm}>
       <Header isLoggin={isLoggin}/>
-      {isLoggin ? <EditPage/> : <LoginPage/>}
+      {isLoggin ? <EditPage userObj={userObj}/> : <LoginPage/>}
       <Footer/>
       </section>):
       <h1>Initialize...</h1>}
