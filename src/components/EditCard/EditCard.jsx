@@ -1,25 +1,16 @@
 import React, { useState } from 'react';
 import { cardDb } from '../../fbase';
-import { ref, set ,push,onValue,update} from "firebase/database";
+import { ref, set ,push} from "firebase/database";
 import styles from './EditCard.module.css';
-const EditCard = ({userObj}) => {
-    const [name,setName] = useState("");
-    const [company,setCompany] = useState("");
-    const [color,setColor] = useState("Light");
-    const [title,setTitle] = useState("");
-    const [email,setEmail] = useState("");
-    const [message,setMessage] = useState("hello!");
-
-
-    //const messageRef = ref(cardDb,`cards/-MqvxifYl5YJh9P3E-I0/`);
-    //onValue(messageRef, (snapshot) => {
-        //const data = snapshot.val();
-        //if(data){
-          //  console.log(data.message);
-        //}
-      //});
+const EditCard = ({userObj,cardObj,refresh}) => {
+    const [name,setName] = useState(cardObj?cardObj.name:"");
+    const [company,setCompany] = useState(cardObj?cardObj.company:"");
+    const [color,setColor] = useState(cardObj?cardObj.color:"Dark");
+    const [title,setTitle] = useState(cardObj?cardObj.title:"");
+    const [email,setEmail] = useState(cardObj?cardObj.email:"");
+    const [message,setMessage] = useState(cardObj?cardObj.message:"");
       
-      function writeUserData(message) {
+      /*function writeUserData(message) {
         const cardObj = {
             uid:userObj.userId,
             name,
@@ -31,7 +22,8 @@ const EditCard = ({userObj}) => {
         }
         set(ref(cardDb, 'cards/-MqwcQGgImLA7eJtVB6y'), cardObj);
       }
-      writeUserData(message);
+      writeUserData(message);*/
+
     const onChange = (event) =>{
         const {target:{name,value}}=event;
         switch(name){
@@ -60,11 +52,10 @@ const EditCard = ({userObj}) => {
 
     const onSubmit = (event)=>{
         event.preventDefault();
-        const cardListRef = ref(cardDb,'cards');
+        const cardListRef = ref(cardDb,`cards/${userObj.userId}`);
         const newCardRef = push(cardListRef);
         const cardObj = {
             key:newCardRef.key,
-            uid:userObj.userId,
             name,
             company,
             color,
@@ -74,29 +65,36 @@ const EditCard = ({userObj}) => {
             createAt : Date.now()
         }
         set(newCardRef,cardObj);
+        setName("");
+        setCompany("");
+        setEmail("");
+        setColor('Dark');
+        setTitle("");
+        setMessage("");
+        refresh();
     }
 
     return (
         <div className={styles.container}>
         <form className={styles.form} onSubmit={onSubmit}>
             <div className={styles.div1}>
-            <input onChange={onChange} className={styles.input} type="text" name="Name" placeholder="Name"/>
-            <input onChange={onChange} className={styles.input} type="text" name="Company" placeholder="Company"/>
-            <select onChange={onChange} className={styles.input} name="Color" id="">
+            <input onChange={onChange} className={styles.input} type="text" value={name} name="Name" placeholder="Name"/>
+            <input onChange={onChange} className={styles.input} type="text" value={company} name="Company" placeholder="Company"/>
+            <select onChange={onChange} className={styles.input} value={color} name="Color" id="">
                 <option value="Light">Light</option>
                 <option value="Dark">Dark</option>
                 <option value="Colorful">Colorful</option>
             </select>
             </div>
             <div className={styles.div2}>
-            <input onChange={onChange} className={styles.input} type="text" name="Title" placeholder="Title"/>
-            <input onChange={onChange} className={styles.input} type="email" name="Email" placeholder="Email"/>
+            <input onChange={onChange} className={styles.input} type="text" value={title} name="Title" placeholder="Title"/>
+            <input onChange={onChange} className={styles.input} type="email" value={email} name="Email" placeholder="Email"/>
             </div>
-            <textarea  onChange={onChange} className={styles.textarea}name="Message" id="" cols="30" rows="10" placeholder="Message"></textarea>
+            <textarea  onChange={onChange} className={styles.textarea}value={message} name="Message" id="" cols="30" rows="10" placeholder="Message"></textarea>
             <div className={styles.div3}>
             <label className={styles.imageBtn}  htmlFor="input-image">No file</label>
             <input className={styles.inputImg} id="input-image"type="file" accept="image/*"/>
-            <input className={styles.input,styles.submitBtn} type="submit" value="Add"/>
+            <input className={styles.submitBtn} type="submit" value={cardObj? "Delete":"Add"}/>
             </div>
         </form>
         </div>

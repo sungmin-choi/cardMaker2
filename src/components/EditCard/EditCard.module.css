@@ -1,5 +1,6 @@
 .container {
   width: 565px;
+  margin-bottom: 13px;
 }
 .input,
 .imageBtn {
