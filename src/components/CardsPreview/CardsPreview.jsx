@@ -5,7 +5,7 @@ const CardsPreview = ({userObj,cardsObj}) => {
     return(
         <div className={styles.container}> 
         <h1 className={styles.title}>Card Preview</h1>
-        {cardsObj && cardsObj.map((cardObj)=><CardPreview userObj={userObj} cardObj={cardObj}/>)}
+        {cardsObj && cardsObj.map((cardObj)=><CardPreview key={cardObj[0]} userObj={userObj} cardObj={cardObj[1]} cardId={cardObj[0]}/>)}
 
         
         </div>

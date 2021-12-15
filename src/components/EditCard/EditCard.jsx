@@ -60,7 +60,6 @@ const EditCard = ({userObj,cardObj,refresh,cardId}) => {
             title,
             email,
             message,
-            createAt : Date.now()
         }
         set(newCardRef,cardObj);
         setName("");
