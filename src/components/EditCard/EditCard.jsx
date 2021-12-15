@@ -8,9 +8,30 @@ const EditCard = ({userObj}) => {
     const [color,setColor] = useState("Light");
     const [title,setTitle] = useState("");
     const [email,setEmail] = useState("");
-    const [message,setMessage] = useState("");
+    const [message,setMessage] = useState("hello!");
 
-    const messageRef = ref(cardDb,`cards/-Mqt7n5h_ntp2p7zMUcH/`);
+
+    //const messageRef = ref(cardDb,`cards/-MqvxifYl5YJh9P3E-I0/`);
+    //onValue(messageRef, (snapshot) => {
+        //const data = snapshot.val();
+        //if(data){
+          //  console.log(data.message);
+        //}
+      //});
+      
+      function writeUserData(message) {
+        const cardObj = {
+            uid:userObj.userId,
+            name,
+            company,
+            color,
+            title,
+            email,
+            message,
+        }
+        set(ref(cardDb, 'cards/-MqwcQGgImLA7eJtVB6y'), cardObj);
+      }
+      writeUserData(message);
     const onChange = (event) =>{
         const {target:{name,value}}=event;
         switch(name){
@@ -31,13 +52,6 @@ const EditCard = ({userObj}) => {
                 break;
             case "Message":
                 setMessage(value);
-                onValue(messageRef, async(snapshot) => {
-                    const data = snapshot.val();
-                    console.log(data);
-                    await set(ref(cardDb,'cards/-Mqt7n5h_ntp2p7zMUcH'),{
-                        message:value
-                    })
-                  });
                 break;
             default:
                 break;
