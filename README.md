@@ -21,6 +21,8 @@
     - [X] 풋터구현.
     - [X] edit card page 구현.
         - [X] edit card component 구현.
+            - [X] 카드 추가하면 (Add 버튼이 Delete 버튼으로 변환.)새로운 edit card 생성.
+            - [ ] 삭제기능 추가.
         - [X] card preview component 구현.
 
 ## ❓공부하면서 배운점

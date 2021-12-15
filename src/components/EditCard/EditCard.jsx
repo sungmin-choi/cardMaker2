@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { cardDb } from '../../fbase';
-import { ref, set ,push} from "firebase/database";
+import { ref, set ,push,remove} from "firebase/database";
 import styles from './EditCard.module.css';
-const EditCard = ({userObj,cardObj,refresh}) => {
+const EditCard = ({userObj,cardObj,refresh,cardId}) => {
     const [name,setName] = useState(cardObj?cardObj.name:"");
     const [company,setCompany] = useState(cardObj?cardObj.company:"");
     const [color,setColor] = useState(cardObj?cardObj.color:"Dark");
@@ -10,9 +10,9 @@ const EditCard = ({userObj,cardObj,refresh}) => {
     const [email,setEmail] = useState(cardObj?cardObj.email:"");
     const [message,setMessage] = useState(cardObj?cardObj.message:"");
       
-      /*function writeUserData(message) {
+      const writeUserData =()=> {
         const cardObj = {
-            uid:userObj.userId,
+            key:cardId,
             name,
             company,
             color,
@@ -20,10 +20,8 @@ const EditCard = ({userObj,cardObj,refresh}) => {
             email,
             message,
         }
-        set(ref(cardDb, 'cards/-MqwcQGgImLA7eJtVB6y'), cardObj);
+        set(ref(cardDb, `cards/${userObj.userId}/${cardId}`), cardObj);
       }
-      writeUserData(message);*/
-
     const onChange = (event) =>{
         const {target:{name,value}}=event;
         switch(name){
@@ -74,6 +72,13 @@ const EditCard = ({userObj,cardObj,refresh}) => {
         refresh();
     }
 
+    const deletCard=()=>{
+        remove(ref(cardDb, `cards/${userObj.userId}/${cardId}`));
+        refresh();
+    }
+    
+    if(cardId) writeUserData();
+
     return (
         <div className={styles.container}>
         <form className={styles.form} onSubmit={onSubmit}>
@@ -94,7 +99,8 @@ const EditCard = ({userObj,cardObj,refresh}) => {
             <div className={styles.div3}>
             <label className={styles.imageBtn}  htmlFor="input-image">No file</label>
             <input className={styles.inputImg} id="input-image"type="file" accept="image/*"/>
-            <input className={styles.submitBtn} type="submit" value={cardObj? "Delete":"Add"}/>
+            {cardObj ?<input className={styles.submitBtn} onClick={deletCard} type="button" value="Delete"/>:
+             <input className={styles.submitBtn}  type="submit" value="Add"/> }
             </div>
         </form>
         </div>
