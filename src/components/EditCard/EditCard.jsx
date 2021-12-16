@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { cardDb } from '../../fbase';
 import { ref, set ,push,remove} from "firebase/database";
 import styles from './EditCard.module.css';
+
+const defaultImg='./logo512.png';
+const cloud_url = "https://api.cloudinary.com/v1_1/dzziboalh/image/upload";
+
 const EditCard = ({userObj,cardObj,refresh,cardId}) => {
     const [name,setName] = useState(cardObj?cardObj.name:"");
     const [company,setCompany] = useState(cardObj?cardObj.company:"");
@@ -9,8 +13,33 @@ const EditCard = ({userObj,cardObj,refresh,cardId}) => {
     const [title,setTitle] = useState(cardObj?cardObj.title:"");
     const [email,setEmail] = useState(cardObj?cardObj.email:"");
     const [message,setMessage] = useState(cardObj?cardObj.message:"");
-      
-      const writeUserData =()=> {
+    const [imgUrl,setImgUrl] = useState(cardObj?cardObj.imgUrl:defaultImg);
+    const [imgName,setImgName]=useState(cardObj?cardObj.imgName:"No File");
+
+
+    const onChangeFile = async (event)=>{
+        const {target:{files}}=event;
+
+        const formData = new FormData();
+        let theFile = files[0];
+        formData.append("file", theFile);
+        formData.append("upload_preset","aaek2djt");
+        await fetch(cloud_url, {
+        method: "POST",
+        body: formData
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            setImgUrl(data.url);
+            setImgName(data.original_filename);
+        });
+        
+
+    }
+
+    const writeUserData =()=> {
         const cardObj = {
             key:cardId,
             name,
@@ -19,6 +48,8 @@ const EditCard = ({userObj,cardObj,refresh,cardId}) => {
             title,
             email,
             message,
+            imgUrl,
+            imgName
         }
         set(ref(cardDb, `cards/${userObj.userId}/${cardId}`), cardObj);
       }
@@ -60,6 +91,8 @@ const EditCard = ({userObj,cardObj,refresh,cardId}) => {
             title,
             email,
             message,
+            imgUrl,
+            imgName
         }
         set(newCardRef,cardObj);
         setName("");
@@ -76,7 +109,10 @@ const EditCard = ({userObj,cardObj,refresh,cardId}) => {
         refresh();
     }
     
-    if(cardId) writeUserData();
+    if(cardId) {
+        console.log(cardId);
+        writeUserData();
+    }
 
     return (
         <div className={styles.container}>
@@ -96,8 +132,8 @@ const EditCard = ({userObj,cardObj,refresh,cardId}) => {
             </div>
             <textarea  onChange={onChange} className={styles.textarea}value={message} name="Message" id="" cols="30" rows="10" placeholder="Message"></textarea>
             <div className={styles.div3}>
-            <label className={styles.imageBtn}  htmlFor="input-image">No file</label>
-            <input className={styles.inputImg} id="input-image"type="file" accept="image/*"/>
+            <label className={styles.imageBtn} style={cardObj.imgUrl!==defaultImg? {"background-color":"#f78fb3"}:{"background-color": "gray"}} htmlFor="input-image">imgName</label>
+            <input onChange={onChangeFile} className={styles.inputImg} id="input-image" type="file" accept="image/*"/>
             {cardObj ?<input className={styles.submitBtn} onClick={deletCard} type="button" value="Delete"/>:
              <input className={styles.submitBtn}  type="submit" value="Add"/> }
             </div>

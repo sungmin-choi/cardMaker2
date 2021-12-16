@@ -55,6 +55,7 @@
 }
 .imageBtn {
   background-color: gray;
+  border-left: 1px solid black;
   text-align: center;
   padding: 1px;
   color: aliceblue;

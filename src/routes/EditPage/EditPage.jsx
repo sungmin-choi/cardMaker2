@@ -6,13 +6,14 @@ import CardsPreview from '../../components/CardsPreview/CardsPreview';
 import {ref, child, get } from "firebase/database";
 const EditPage = ({userObj}) => {
     const [cardsObj,setCardsObj]=useState(null);
+
     const getCards = async()=>{
         const dbRef = ref(cardDb);
         await get(child(dbRef, `cards/${userObj.userId}`)).then((snapshot) => {
             if (snapshot.exists()) {
               setCardsObj(Object.entries(snapshot.val()));
             } else {
-              console.log("No data available");
+                setCardsObj(null);
             }
         });
     }

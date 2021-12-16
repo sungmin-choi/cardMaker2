@@ -3,6 +3,8 @@ import styles from './CardPreview.module.css';
 import {ref, onValue} from "firebase/database";
 import { cardDb } from '../../fbase';
 
+const defaultImg='./logo512.png';
+
 const CardPreview = ({userObj,cardObj,cardId}) => {
     const [name,setName] = useState(cardObj?cardObj.name:"");
     const [company,setCompany] = useState(cardObj?cardObj.company:"");
@@ -10,6 +12,7 @@ const CardPreview = ({userObj,cardObj,cardId}) => {
     const [title,setTitle] = useState(cardObj?cardObj.title:"");
     const [email,setEmail] = useState(cardObj?cardObj.email:"");
     const [message,setMessage] = useState(cardObj?cardObj.message:"");
+    const [imgUrl,setImgUrl] = useState(defaultImg);
     const [colorObj,setColorObj] = useState({});
 
     const changeCardColor=(color)=>{
@@ -47,12 +50,13 @@ const CardPreview = ({userObj,cardObj,cardId}) => {
       if(data.company!==company)setCompany(data.company);
       if(data.email!==email)setEmail(data.email);
       if(data.message!==message)setMessage(data.message);
-    }
+      if(data.imgUrl!==imgUrl) setImgUrl(data.imgUrl);
+      }
     })
 
     return(
         <div style={colorObj} className={styles.container}>
-            <img className={styles.profile} src="./logo512.png" alt="profile" />
+            <img className={styles.profile} src={imgUrl} alt="profile" />
             <div className={styles.card}>
                 <header  className={styles.name}>{`${name}`}</header>
                 <span  className={styles.company}>{`${company}`}</span>
