@@ -14,7 +14,7 @@ const EditCard = ({userObj,cardObj,refresh,cardId}) => {
     const [email,setEmail] = useState(cardObj?cardObj.email:"");
     const [message,setMessage] = useState(cardObj?cardObj.message:"");
     const [imgUrl,setImgUrl] = useState(cardObj?cardObj.imgUrl:defaultImg);
-    const [imgName,setImgName]=useState(cardObj?cardObj.imgName:"No File");
+    const [imgName,setImgName]=useState( cardObj?(cardObj.imgUrl!==defaultImg? cardObj.imgName:"No File"):"No File");
 
 
     const onChangeFile = async (event)=>{
@@ -35,7 +35,7 @@ const EditCard = ({userObj,cardObj,refresh,cardId}) => {
             setImgUrl(data.url);
             setImgName(data.original_filename);
         });
-        
+        refresh();
 
     }
 
@@ -81,6 +81,7 @@ const EditCard = ({userObj,cardObj,refresh,cardId}) => {
 
     const onSubmit = (event)=>{
         event.preventDefault();
+
         const cardListRef = ref(cardDb,`cards/${userObj.userId}`);
         const newCardRef = push(cardListRef);
         const cardObj = {
@@ -101,6 +102,8 @@ const EditCard = ({userObj,cardObj,refresh,cardId}) => {
         setColor('Dark');
         setTitle("");
         setMessage("");
+        setImgName("No File");
+        setImgUrl(defaultImg);
         refresh();
     }
 
@@ -113,7 +116,7 @@ const EditCard = ({userObj,cardObj,refresh,cardId}) => {
         console.log(cardId);
         writeUserData();
     }
-
+    //style={cardObj.imgUrl!==defaultImg? {"background-color":"#f78fb3"}:{"background-color": "gray"}} 
     return (
         <div className={styles.container}>
         <form className={styles.form} onSubmit={onSubmit}>
@@ -132,8 +135,8 @@ const EditCard = ({userObj,cardObj,refresh,cardId}) => {
             </div>
             <textarea  onChange={onChange} className={styles.textarea}value={message} name="Message" id="" cols="30" rows="10" placeholder="Message"></textarea>
             <div className={styles.div3}>
-            <label className={styles.imageBtn} style={cardObj.imgUrl!==defaultImg? {"background-color":"#f78fb3"}:{"background-color": "gray"}} htmlFor="input-image">imgName</label>
-            <input onChange={onChangeFile} className={styles.inputImg} id="input-image" type="file" accept="image/*"/>
+            <label className={styles.imageBtn} style={cardObj&& cardObj.imgUrl!==defaultImg? {"backgroundColor":"#f78fb3"}:{"backgroundColor": "gray"}} >{imgName}</label>
+            <input onChange={onChangeFile} className={styles.inputImg} type="file" accept="image/*"/>
             {cardObj ?<input className={styles.submitBtn} onClick={deletCard} type="button" value="Delete"/>:
              <input className={styles.submitBtn}  type="submit" value="Add"/> }
             </div>

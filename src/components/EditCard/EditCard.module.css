@@ -41,10 +41,12 @@
   margin: 0;
 }
 .inputImg {
-  display: none;
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
 }
 .submitBtn {
-  flex-grow: 1;
+  width: 50%;
   margin: 0;
   border-style: none;
   border-right: 1px solid black;
