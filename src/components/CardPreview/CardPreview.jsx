@@ -37,6 +37,7 @@ const CardPreview = ({userObj,cardObj,cardId}) => {
     const starCountRef = ref(cardDb, `cards/${userObj.userId}/${cardId}`);
     onValue(starCountRef, (snapshot) => {
       const data = snapshot.val();
+      if(data){
       if(data.title!==title) setTitle(data.title);
       if(data.name!==name)setName(data.name); 
       if(data.color!==color){
@@ -46,6 +47,7 @@ const CardPreview = ({userObj,cardObj,cardId}) => {
       if(data.company!==company)setCompany(data.company);
       if(data.email!==email)setEmail(data.email);
       if(data.message!==message)setMessage(data.message);
+    }
     })
 
     return(
