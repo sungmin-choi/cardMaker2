@@ -1,8 +1,15 @@
 ## ✏️Business Card Maker
 
     React 와 Firebase 로 만드는 Business Card Maker
+    실시간으로 Firebase 리얼타임데이터베이스 와 연결하여 정보를 수정과 동시에 저장이되는 장점을 활용했습니다.
+    이미지 업로드는 Cloudinary 데이터 베이스 를 활용해 구현했습니다.
+    간단한 반응형도 적용했습니다(미디어 쿼리 사용)
 
 ## 🎯 실행화면
+
+<img src="./public/loginPage.png" />
+<img src="./public/cardMakerPage1.png" />
+<img src="./public/cardMakerPage2.png" />
 
 ## 🛠 Tech Stack
 
@@ -28,7 +35,7 @@
         - [X] card preview component 구현.
             - [X] color 바꿈 구현.
             - [X] 실시간 업데이트 구현.
-    - [ ] 반응형 웹 구현.
+    - [X] 반응형 웹 구현.
     - [X] 이미지 업로드.
 
 ## ❓공부하면서 배운점
