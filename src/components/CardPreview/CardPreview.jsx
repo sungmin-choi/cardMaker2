@@ -5,7 +5,7 @@ import { cardDb } from '../../fbase';
 
 const defaultImg='./logo512.png';
 
-const CardPreview = ({userObj,cardObj,cardId}) => {
+const CardPreview = ({userObj,cardObj,cardId,firebase}) => {
     const [name,setName] = useState(cardObj?cardObj.name:"");
     const [company,setCompany] = useState(cardObj?cardObj.company:"");
     const [color,setColor] = useState(cardObj?cardObj.color:"Dark");
@@ -15,6 +15,11 @@ const CardPreview = ({userObj,cardObj,cardId}) => {
     const [imgUrl,setImgUrl] = useState(defaultImg);
     const [colorObj,setColorObj] = useState({});
 
+    const cardStateObj={
+        name,company,color,title,email,message,imgUrl,colorObj,
+        setName,setTitle,setCompany,setColor,setColorObj,setMessage,
+        setImgUrl,setEmail
+    }
     const changeCardColor=(color)=>{
         if(color === 'Dark'){
             setColorObj({
@@ -37,22 +42,9 @@ const CardPreview = ({userObj,cardObj,cardId}) => {
     useEffect(()=>{
         changeCardColor(color);
     },[]);
-    const starCountRef = ref(cardDb, `cards/${userObj.userId}/${cardId}`);
-    onValue(starCountRef, (snapshot) => {
-      const data = snapshot.val();
-      if(data){
-      if(data.title!==title) setTitle(data.title);
-      if(data.name!==name)setName(data.name); 
-      if(data.color!==color){
-          setColor(data.color);
-          changeCardColor(data.color);
-      }
-      if(data.company!==company)setCompany(data.company);
-      if(data.email!==email)setEmail(data.email);
-      if(data.message!==message)setMessage(data.message);
-      if(data.imgUrl!==imgUrl) setImgUrl(data.imgUrl);
-      }
-    })
+
+    const cardRef = firebase.getCardRef(userObj,cardId);
+    firebase.cardOnvalue(cardRef,cardStateObj);
 
     return(
         <div style={colorObj} className={styles.container}>

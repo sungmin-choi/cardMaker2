@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth} from "firebase/auth";
 import { getDatabase } from "firebase/database";
 import {onAuthStateChanged } from "firebase/auth";
-import {ref, child, get } from "firebase/database";
+import {ref, child, get,onValue } from "firebase/database";
 import { GoogleAuthProvider ,signInWithPopup,GithubAuthProvider} from "firebase/auth";
 
 export default class FirebaseService{
@@ -55,6 +55,30 @@ export default class FirebaseService{
       else if(name==="Github") provider =new GithubAuthProvider();
       await signInWithPopup(authUser, provider);
   }
+
+  getCardRef(userObj,cardId){
+    return ref(this.cardDb, `cards/${userObj.userId}/${cardId}`);
+  }
+
+  cardOnvalue(cardRef,card){
+    onValue(cardRef, (snapshot) => {
+      const data = snapshot.val();
+      if(data){
+      if(data.title!==card.title) card.setTitle(data.title);
+      if(data.name!==card.name)card.setName(data.name); 
+      if(data.color!==card.color){
+          card.setColor(data.color);
+          card.changeCardColor(data.color);
+      }
+      if(data.company!==card.company)card.setCompany(data.company);
+      if(data.email!==card.email)card.setEmail(data.email);
+      if(data.message!==card.message)card.setMessage(data.message);
+      if(data.imgUrl!==card.imgUrl) card.setImgUrl(data.imgUrl);
+      }
+    })
+  }
+
+
 }
 
 const firebaseConfig = {
