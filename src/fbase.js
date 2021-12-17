@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth} from "firebase/auth";
 import { getDatabase } from "firebase/database";
 import {onAuthStateChanged } from "firebase/auth";
+import {ref, child, get } from "firebase/database";
 
 export default class FirebaseService{
   constructor(){
@@ -35,7 +36,18 @@ export default class FirebaseService{
     });
   }
 
+  getCardsInfo=async(userObj,setCardsObj)=>{
+    const dbRef = ref(this.cardDb);
+    await get(child(dbRef, `cards/${userObj.userId}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        setCardsObj(Object.entries(snapshot.val()));
+      } else {
+          setCardsObj(null);
+      }
+  });
 
+
+  }
 }
 
 const firebaseConfig = {
