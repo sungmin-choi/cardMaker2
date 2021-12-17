@@ -1,12 +1,10 @@
-import React, { useRef, useState } from 'react';
-import { cardDb } from '../../fbase';
-import { ref, set ,push,remove} from "firebase/database";
+import React, {useState } from 'react';
 import styles from './EditCard.module.css';
 
 const defaultImg='./logo512.png';
 const cloud_url = "https://api.cloudinary.com/v1_1/dzziboalh/image/upload";
 
-const EditCard = ({userObj,cardObj,refresh,cardId}) => {
+const EditCard = ({userObj,cardObj,refresh,cardId,firebase}) => {
     const [name,setName] = useState(cardObj?cardObj.name:"");
     const [company,setCompany] = useState(cardObj?cardObj.company:"");
     const [color,setColor] = useState(cardObj?cardObj.color:"Dark");
@@ -15,7 +13,12 @@ const EditCard = ({userObj,cardObj,refresh,cardId}) => {
     const [message,setMessage] = useState(cardObj?cardObj.message:"");
     const [imgUrl,setImgUrl] = useState(cardObj?cardObj.imgUrl:defaultImg);
     const [imgName,setImgName]=useState( cardObj?(cardObj.imgUrl!==defaultImg? cardObj.imgName:"No File"):"No File");
-
+    
+    const cardStateObj={
+        name,company,color,title,email,message,imgUrl,imgName,
+        setName,setTitle,setCompany,setColor,setMessage,
+        setImgUrl,setEmail
+    }
 
     const onChangeFile = async (event)=>{
         const {target:{files}}=event;
@@ -38,21 +41,6 @@ const EditCard = ({userObj,cardObj,refresh,cardId}) => {
         refresh();
 
     }
-
-    const writeUserData =()=> {
-        const cardObj = {
-            key:cardId,
-            name,
-            company,
-            color,
-            title,
-            email,
-            message,
-            imgUrl,
-            imgName
-        }
-        set(ref(cardDb, `cards/${userObj.userId}/${cardId}`), cardObj);
-      }
     const onChange = (event) =>{
         const {target:{name,value}}=event;
         switch(name){
@@ -81,21 +69,7 @@ const EditCard = ({userObj,cardObj,refresh,cardId}) => {
 
     const onSubmit = (event)=>{
         event.preventDefault();
-
-        const cardListRef = ref(cardDb,`cards/${userObj.userId}`);
-        const newCardRef = push(cardListRef);
-        const cardObj = {
-            key:newCardRef.key,
-            name,
-            company,
-            color,
-            title,
-            email,
-            message,
-            imgUrl,
-            imgName
-        }
-        set(newCardRef,cardObj);
+        firebase.setNewCard(userObj,cardStateObj);
         setName("");
         setCompany("");
         setEmail("");
@@ -108,13 +82,12 @@ const EditCard = ({userObj,cardObj,refresh,cardId}) => {
     }
 
     const deletCard=()=>{
-        remove(ref(cardDb, `cards/${userObj.userId}/${cardId}`));
+        firebase.deleteCard(userObj,cardId);
         refresh();
     }
     
     if(cardId) {
-        console.log(cardId);
-        writeUserData();
+        firebase.wirteCardData(cardId,userObj,cardStateObj);
     }
     //style={cardObj.imgUrl!==defaultImg? {"background-color":"#f78fb3"}:{"background-color": "gray"}} 
     return (

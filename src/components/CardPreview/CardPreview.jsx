@@ -1,9 +1,7 @@
 import React ,{useEffect, useState}from 'react';
 import styles from './CardPreview.module.css';
-import {ref, onValue} from "firebase/database";
-import { cardDb } from '../../fbase';
 
-const defaultImg='./logo512.png';
+const defaultImg=process.env.REACT_APP_DEFAULT_IMG;
 
 const CardPreview = ({userObj,cardObj,cardId,firebase}) => {
     const [name,setName] = useState(cardObj?cardObj.name:"");

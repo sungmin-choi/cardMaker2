@@ -15,7 +15,7 @@ const EditPage = ({userObj,firebase}) => {
 
     return(
         <div className={styles.container}>
-            <EditCards userObj={userObj} refresh={refresh} cardsObj={cardsObj}/>
+            <EditCards userObj={userObj} refresh={refresh} cardsObj={cardsObj} firebase={firebase}/>
             <div className={styles.liner}></div>
             <CardsPreview userObj={userObj} refresh={refresh} cardsObj={cardsObj} firebase={firebase}/>
         </div>

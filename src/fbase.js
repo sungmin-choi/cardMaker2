@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth} from "firebase/auth";
 import { getDatabase } from "firebase/database";
 import {onAuthStateChanged } from "firebase/auth";
-import {ref, child, get,onValue } from "firebase/database";
+import {ref, child, get,onValue,push,remove,set } from "firebase/database";
 import { GoogleAuthProvider ,signInWithPopup,GithubAuthProvider} from "firebase/auth";
 
 export default class FirebaseService{
@@ -78,6 +78,41 @@ export default class FirebaseService{
     })
   }
 
+  wirteCardData(cardId,userObj,card){
+    const cardObj = {
+      key:cardId,
+      name:card.name,
+      company:card.company,
+      color:card.color,
+      title:card.title,
+      email:card.email,
+      message:card.message,
+      imgUrl:card.imgUrl,
+      imgName:card.imgName
+  }
+  set(ref(this.cardDb, `cards/${userObj.userId}/${cardId}`), cardObj);
+  }
+
+  setNewCard(userObj,card){
+    const cardListRef = ref(this.cardDb,`cards/${userObj.userId}`);
+    const newCardRef = push(cardListRef);
+    const cardObj = {
+        key:newCardRef.key,
+        name:card.name,
+        company:card.company,
+        color:card.color,
+        title:card.title,
+        email:card.email,
+        message:card.message,
+        imgUrl:card.imgUrl,
+        imgName:card.imgName
+    }
+    set(newCardRef,cardObj);
+  }
+
+  deleteCard(userObj,cardId){
+    remove(ref(this.cardDb, `cards/${userObj.userId}/${cardId}`));
+  }
 
 }
 
