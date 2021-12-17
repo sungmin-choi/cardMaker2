@@ -22,7 +22,7 @@ function App() {
     <div className={styles.App}>
       {init ?(
       <section className={styles.loginForm}>
-      <Header isLoggin={isLoggin}/>
+      <Header isLoggin={isLoggin} firebase={firebase}/>
       {isLoggin ? <EditPage userObj={userObj} firebase={firebase}/> : <LoginPage firebase={firebase}/>}
       <Footer/>
       </section>):

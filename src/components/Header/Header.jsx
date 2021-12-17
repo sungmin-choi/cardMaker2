@@ -2,11 +2,10 @@ import React from 'react';
 import styles from './Header.module.css';
 import { faIdCard } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {authUser} from "../../fbase";
-import {signOut } from "firebase/auth";
-const Header = ({isLoggin}) => {
 
-    const logOut = async()=>await signOut(authUser);
+const Header = ({isLoggin,firebase}) => {
+
+    const logOut =()=>firebase.logOut();
 
     return(
         <header className={styles.header}>

@@ -1,8 +1,9 @@
 import React, {useState } from 'react';
 import styles from './EditCard.module.css';
+import Cloudinary from '../../cloudinary';
 
-const defaultImg='./logo512.png';
-const cloud_url = "https://api.cloudinary.com/v1_1/dzziboalh/image/upload";
+const defaultImg=process.env.REACT_APP_DEFAULT_IMG;
+const cloudinary = new Cloudinary();
 
 const EditCard = ({userObj,cardObj,refresh,cardId,firebase}) => {
     const [name,setName] = useState(cardObj?cardObj.name:"");
@@ -20,24 +21,9 @@ const EditCard = ({userObj,cardObj,refresh,cardId,firebase}) => {
         setImgUrl,setEmail
     }
 
-    const onChangeFile = async (event)=>{
+    const onChangeFile = (event)=>{
         const {target:{files}}=event;
-
-        const formData = new FormData();
-        let theFile = files[0];
-        formData.append("file", theFile);
-        formData.append("upload_preset","aaek2djt");
-        await fetch(cloud_url, {
-        method: "POST",
-        body: formData
-        })
-        .then((response) => {
-            return response.json();
-        })
-        .then((data) => {
-            setImgUrl(data.url);
-            setImgName(data.original_filename);
-        });
+        cloudinary.uploadImage(files,setImgUrl,setImgName);
         refresh();
 
     }

@@ -2,24 +2,24 @@
 import { initializeApp } from "firebase/app";
 import { getAuth} from "firebase/auth";
 import { getDatabase } from "firebase/database";
-import {onAuthStateChanged } from "firebase/auth";
+import {onAuthStateChanged,signOut } from "firebase/auth";
 import {ref, child, get,onValue,push,remove,set } from "firebase/database";
 import { GoogleAuthProvider ,signInWithPopup,GithubAuthProvider} from "firebase/auth";
 
 export default class FirebaseService{
   constructor(){
     this.firebaseConfig = {
-      apiKey: "AIzaSyDw7tricSnJQqCvC2-mgjJ8tpGUhCTOSU4",
-      authDomain: "cardmaker2-c1863.firebaseapp.com",
-      databaseURL: "https://cardmaker2-c1863-default-rtdb.asia-southeast1.firebasedatabase.app",
-      projectId: "cardmaker2-c1863",
-      storageBucket: "cardmaker2-c1863.appspot.com",
-      messagingSenderId: "340955878649",
-      appId: "1:340955878649:web:2f2cf7109cde333d833e28"
+      apiKey: process.env.REACT_APP_API_KEY,
+      authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+      databaseURL: process.env.REACT_APP_DATABASE_URL,
+      projectId: process.env.REACT_APP_PROJECT_ID,
+      storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+      messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+      appId:process.env.REACT_APP_APP_ID
     };
-    this.app=initializeApp(firebaseConfig);
+    this.app=initializeApp(this.firebaseConfig);
     this.authUser = getAuth();
-    this.cardDb = getDatabase(app); 
+    this.cardDb = getDatabase(this.app); 
   }
 
   stateChanged(setUserObj,setIsLoggin){
@@ -53,7 +53,7 @@ export default class FirebaseService{
       let provider;
       if(name==="Google") provider=new GoogleAuthProvider();
       else if(name==="Github") provider =new GithubAuthProvider();
-      await signInWithPopup(authUser, provider);
+      await signInWithPopup(this.authUser, provider);
   }
 
   getCardRef(userObj,cardId){
@@ -114,19 +114,7 @@ export default class FirebaseService{
     remove(ref(this.cardDb, `cards/${userObj.userId}/${cardId}`));
   }
 
+  logOut=async()=>await signOut(this.authUser);
+
 }
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDw7tricSnJQqCvC2-mgjJ8tpGUhCTOSU4",
-  authDomain: "cardmaker2-c1863.firebaseapp.com",
-  databaseURL: "https://cardmaker2-c1863-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "cardmaker2-c1863",
-  storageBucket: "cardmaker2-c1863.appspot.com",
-  messagingSenderId: "340955878649",
-  appId: "1:340955878649:web:2f2cf7109cde333d833e28"
-};
-
-const app = initializeApp(firebaseConfig);
-
-export const authUser = getAuth();
-export const cardDb = getDatabase(app); 
