@@ -9,3 +9,9 @@
   margin: 6px;
   color: #303952;
 }
+@media screen and (max-width: 1350px) {
+  /* 데스크탑에서 사용될 스타일을 여기에 작성합니다. */
+  .container {
+    width: 100%;
+  }
+}
