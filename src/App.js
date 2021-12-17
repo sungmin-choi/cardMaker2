@@ -23,7 +23,7 @@ function App() {
       {init ?(
       <section className={styles.loginForm}>
       <Header isLoggin={isLoggin}/>
-      {isLoggin ? <EditPage userObj={userObj} firebase={firebase}/> : <LoginPage/>}
+      {isLoggin ? <EditPage userObj={userObj} firebase={firebase}/> : <LoginPage firebase={firebase}/>}
       <Footer/>
       </section>):
       <h1>Initialize...</h1>}

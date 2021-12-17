@@ -4,6 +4,7 @@ import { getAuth} from "firebase/auth";
 import { getDatabase } from "firebase/database";
 import {onAuthStateChanged } from "firebase/auth";
 import {ref, child, get } from "firebase/database";
+import { GoogleAuthProvider ,signInWithPopup,GithubAuthProvider} from "firebase/auth";
 
 export default class FirebaseService{
   constructor(){
@@ -44,9 +45,15 @@ export default class FirebaseService{
       } else {
           setCardsObj(null);
       }
-  });
+  })
+  }
 
-
+  socialLogin =async(event)=>{
+      const {target:{name}}=event;
+      let provider;
+      if(name==="Google") provider=new GoogleAuthProvider();
+      else if(name==="Github") provider =new GithubAuthProvider();
+      await signInWithPopup(authUser, provider);
   }
 }
 
